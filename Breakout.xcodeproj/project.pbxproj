@@ -24,6 +24,7 @@
 		2C9ECE51198AEBC1003DE994 /* PaddleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9ECE50198AEBC1003DE994 /* PaddleView.m */; };
 		2C9ECE54198B323F003DE994 /* BallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9ECE53198B323F003DE994 /* BallView.m */; };
 		2CA6C1D9198BE5E100F76163 /* BlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA6C1D8198BE5E100F76163 /* BlockView.m */; };
+		2CA6C1DC198C344500F76163 /* RandomColorGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA6C1DB198C344500F76163 /* RandomColorGenerator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,8 @@
 		2C9ECE53198B323F003DE994 /* BallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallView.m; sourceTree = "<group>"; };
 		2CA6C1D7198BE5E100F76163 /* BlockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockView.h; sourceTree = "<group>"; };
 		2CA6C1D8198BE5E100F76163 /* BlockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockView.m; sourceTree = "<group>"; };
+		2CA6C1DA198C344500F76163 /* RandomColorGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RandomColorGenerator.h; path = Breakout/RandomColorGenerator.h; sourceTree = "<group>"; };
+		2CA6C1DB198C344500F76163 /* RandomColorGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RandomColorGenerator.m; path = Breakout/RandomColorGenerator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +94,8 @@
 		2C9ECE0E198AEB1F003DE994 = {
 			isa = PBXGroup;
 			children = (
+				2CA6C1DA198C344500F76163 /* RandomColorGenerator.h */,
+				2CA6C1DB198C344500F76163 /* RandomColorGenerator.m */,
 				2C9ECE20198AEB1F003DE994 /* Breakout */,
 				2C9ECE3F198AEB1F003DE994 /* BreakoutTests */,
 				2C9ECE19198AEB1F003DE994 /* Frameworks */,
@@ -265,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CA6C1D9198BE5E100F76163 /* BlockView.m in Sources */,
+				2CA6C1DC198C344500F76163 /* RandomColorGenerator.m in Sources */,
 				2C9ECE51198AEBC1003DE994 /* PaddleView.m in Sources */,
 				2C9ECE31198AEB1F003DE994 /* ViewController.m in Sources */,
 				2C9ECE54198B323F003DE994 /* BallView.m in Sources */,

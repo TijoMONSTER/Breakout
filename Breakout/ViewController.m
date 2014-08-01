@@ -10,8 +10,9 @@
 #import "PaddleView.h"
 #import "BallView.h"
 #import "BlockView.h"
+#import "RandomColorGenerator.h"
 
-@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate>
+@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate, BlockViewDelegate>
 {
 	UIDynamicAnimator *dynamicAnimator;
 	UIPushBehavior *pushBehavior;
@@ -55,10 +56,6 @@
 	if ([(NSString *)identifier isEqualToString: @"lowerBoundary"]) {
 		[self resetBallPositionAndUpdateDynamicAnimator];
 	}
-
-//	if (p.y >= self.view.frame.size.height - 5) {
-
-//	}
 }
 
 - (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item1 withItem:(id<UIDynamicItem>)item2 atPoint:(CGPoint)p
@@ -76,10 +73,8 @@
 
 	// if a block was hit
 	if (block != nil) {
-		[self.blocks removeObject:block];
-		[dynamicAnimator removeBehavior:block.dynamicBehavior];
-		[collisionBehavior removeItem:block];
-		[block removeFromSuperview];
+
+		[block animateDestruction];
 
 		if ([self shouldStartAgain]) {
 			NSLog(@"Should start again");
@@ -102,6 +97,13 @@
 	[self.paddleView updatePaddleLocation];
 }
 
+#pragma mark BlockViewDelegate
+
+-(void)destructionAnimationCompletedWithBlockView:(id)block
+{
+	[self removeBlock:block];
+}
+
 #pragma mark Helper methods
 - (void)addBlocks
 {
@@ -117,19 +119,12 @@
 															20,
 															blockSize.width,
 															blockSize.height)
-										   color: [self randomColor]];
+										   color: [RandomColorGenerator randomColor]];
 
 		[self.view addSubview:block];
 		[self.blocks addObject:block];
+		block.delegate = self;
 	}
-}
-
-- (UIColor *)randomColor
-{
-	float red = (float) rand() / RAND_MAX;
-	float green = (float) rand() / RAND_MAX;
-	float blue = (float) rand() / RAND_MAX;
-	return [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
 }
 
 - (BOOL)shouldStartAgain
@@ -146,7 +141,7 @@
 
 	pushBehavior.pushDirection = CGVectorMake(0.5, 1.0);
 	pushBehavior.active = YES;
-	pushBehavior.magnitude = 0.2;
+	pushBehavior.magnitude = 0.02;
 	[dynamicAnimator addBehavior:pushBehavior];
 
 	collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.paddleView, self.ballView]];
@@ -164,6 +159,7 @@
 	paddleDynamicBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.paddleView]];
 	paddleDynamicBehavior.allowsRotation = NO;
 	paddleDynamicBehavior.density = 1000;
+	paddleDynamicBehavior.elasticity = 1.0;
 	[dynamicAnimator addBehavior:paddleDynamicBehavior];
 
 	ballDynamicBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.ballView]];
@@ -197,6 +193,15 @@
 	timer = nil;
 
 	[self addBehaviors];
+}
+
+- (void)removeBlock:(BlockView *)block
+{
+	[self.blocks removeObject:block];
+	[dynamicAnimator removeBehavior:block.dynamicBehavior];
+	[collisionBehavior removeItem:block];
+	[block removeFromSuperview];
+
 }
 
 @end
