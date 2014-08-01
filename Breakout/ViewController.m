@@ -16,6 +16,7 @@
 	UIPushBehavior *pushBehavior;
 	UICollisionBehavior *collisionBehavior;
 	UIDynamicItemBehavior *paddleDynamicBehavior;
+	UIDynamicItemBehavior *ballDynamicBehavior;
 }
 
 @property (weak, nonatomic) IBOutlet PaddleView *paddleView;
@@ -40,7 +41,7 @@
 	[dynamicAnimator addBehavior:pushBehavior];
 
 	collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.paddleView, self.ballView]];
-	collisionBehavior.collisionMode = UICollisionBehaviorModeItems;
+	collisionBehavior.collisionMode = UICollisionBehaviorModeEverything;
 	collisionBehavior.collisionDelegate = self;
 	collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
 	[dynamicAnimator addBehavior:collisionBehavior];
@@ -49,6 +50,13 @@
 	paddleDynamicBehavior.allowsRotation = NO;
 	paddleDynamicBehavior.density = 1000;
 	[dynamicAnimator addBehavior:paddleDynamicBehavior];
+
+	ballDynamicBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.ballView]];
+	ballDynamicBehavior.elasticity = 1.0;
+	ballDynamicBehavior.friction = 0;
+	ballDynamicBehavior.resistance = 0;
+	ballDynamicBehavior.allowsRotation = NO;
+	[dynamicAnimator addBehavior:ballDynamicBehavior];
 }
 
 #pragma mark PaddleViewDelegate
@@ -69,11 +77,7 @@
 
 - (IBAction)dragPaddle:(UIPanGestureRecognizer *)panGestureRecognizer
 {
-	CGPoint translation = [panGestureRecognizer translationInView:self.view];
-
-	self.paddleView.center = CGPointMake(self.paddleView.center.x + translation.x, self.paddleView.center.y);
-	[panGestureRecognizer setTranslation:CGPointMake(0, 0) inView:self.view];
-
+	self.paddleView.center = CGPointMake([panGestureRecognizer locationInView:self.view].x, self.paddleView.center.y);
 	[self.paddleView updatePaddleLocation];
 }
 
