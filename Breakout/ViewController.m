@@ -10,10 +10,12 @@
 #import "PaddleView.h"
 #import "BallView.h"
 
-@interface ViewController () <PaddleViewDelegate>
+@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate>
 {
 	UIDynamicAnimator *dynamicAnimator;
 	UIPushBehavior *pushBehavior;
+	UICollisionBehavior *collisionBehavior;
+	UIDynamicItemBehavior *paddleDynamicBehavior;
 }
 
 @property (weak, nonatomic) IBOutlet PaddleView *paddleView;
@@ -34,8 +36,19 @@
 	pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.ballView] mode:UIPushBehaviorModeInstantaneous];
 	pushBehavior.pushDirection = CGVectorMake(0.5, 1.0);
 	pushBehavior.active = YES;
-	pushBehavior.magnitude = 0.1;
+	pushBehavior.magnitude = 0.2;
 	[dynamicAnimator addBehavior:pushBehavior];
+
+	collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.paddleView, self.ballView]];
+	collisionBehavior.collisionMode = UICollisionBehaviorModeItems;
+	collisionBehavior.collisionDelegate = self;
+	collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
+	[dynamicAnimator addBehavior:collisionBehavior];
+
+	paddleDynamicBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.paddleView]];
+	paddleDynamicBehavior.allowsRotation = NO;
+	paddleDynamicBehavior.density = 1000;
+	[dynamicAnimator addBehavior:paddleDynamicBehavior];
 }
 
 #pragma mark PaddleViewDelegate
@@ -43,6 +56,13 @@
 - (void)updatedLocationForPaddle
 {
 	[dynamicAnimator updateItemUsingCurrentState:self.paddleView];
+}
+
+#pragma mark UICollisionBehaviorDelegate
+
+- (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item1 withItem:(id<UIDynamicItem>)item2 atPoint:(CGPoint)p
+{
+	NSLog(@"Collision with item");
 }
 
 #pragma mark IBActions
