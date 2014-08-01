@@ -57,8 +57,6 @@
 	ballDynamicBehavior.resistance = 0;
 	ballDynamicBehavior.allowsRotation = NO;
 	[dynamicAnimator addBehavior:ballDynamicBehavior];
-
-	NSLog(@"lower boundary %f", self.view.frame.size.height);
 }
 
 #pragma mark PaddleViewDelegate
@@ -72,7 +70,6 @@
 
 - (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier atPoint:(CGPoint)p
 {
-	NSLog(@"Boundary");
 	if (p.y >= self.view.frame.size.height - 5) {
 		self.ballView.center = self.view.center;
 		[dynamicAnimator updateItemUsingCurrentState:self.ballView];
