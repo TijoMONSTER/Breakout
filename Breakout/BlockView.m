@@ -10,4 +10,10 @@
 
 @implementation BlockView
 
+- (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color
+{
+	self = [super initWithFrame:frame];
+	self.backgroundColor = color;
+	return self;
+}
 @end

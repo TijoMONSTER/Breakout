@@ -22,7 +22,6 @@
 
 @property (weak, nonatomic) IBOutlet PaddleView *paddleView;
 @property (weak, nonatomic) IBOutlet BallView *ballView;
-@property (weak, nonatomic) IBOutlet BlockView *blockView;
 
 @end
 
@@ -42,11 +41,14 @@
 	pushBehavior.magnitude = 0.2;
 	[dynamicAnimator addBehavior:pushBehavior];
 
-	collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.paddleView, self.ballView, self.blockView]];
+	collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.paddleView, self.ballView]];
 	collisionBehavior.collisionMode = UICollisionBehaviorModeEverything;
 	collisionBehavior.collisionDelegate = self;
 	collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
 	[dynamicAnimator addBehavior:collisionBehavior];
+
+	// add lower boundary
+	[collisionBehavior addBoundaryWithIdentifier:@"lowerBoundary" fromPoint:CGPointMake(0.0, self.view.frame.size.height) toPoint:CGPointMake(self.view.frame.size.width, self.view.frame.size.height)];
 
 	paddleDynamicBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.paddleView]];
 	paddleDynamicBehavior.allowsRotation = NO;
@@ -59,6 +61,8 @@
 	ballDynamicBehavior.resistance = 0;
 	ballDynamicBehavior.allowsRotation = NO;
 	[dynamicAnimator addBehavior:ballDynamicBehavior];
+
+	[self addBlocks];
 }
 
 #pragma mark PaddleViewDelegate
@@ -72,16 +76,23 @@
 
 - (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier atPoint:(CGPoint)p
 {
-	if (p.y >= self.view.frame.size.height - 5) {
+	if ([(NSString *)identifier isEqualToString: @"lowerBoundary"]) {
 		self.ballView.center = self.view.center;
 		[dynamicAnimator updateItemUsingCurrentState:self.ballView];
 	}
+
+//	if (p.y >= self.view.frame.size.height - 5) {
+
+//	}
 }
 
 - (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item1 withItem:(id<UIDynamicItem>)item2 atPoint:(CGPoint)p
 {
-	if ([item1 isEqual:self.blockView] || [item2 isEqual:self.blockView]) {
-		[self.blockView removeFromSuperview];
+	if ([item1 isKindOfClass:[BlockView class]] && [item2 isEqual:self.ballView]) {
+		[self removeBlockFromSuperview:(BlockView *)item1];
+	}
+	else if ([item2 isKindOfClass:[BlockView class]] && [item1 isEqual:self.ballView]) {
+		[self removeBlockFromSuperview:(BlockView *)item2];
 	}
 }
 
@@ -93,5 +104,42 @@
 	[self.paddleView updatePaddleLocation];
 }
 
+#pragma mark Helper methods
+- (void)addBlocks
+{
+	BlockView *block;
+
+	int numberOfBlocks = 3;
+	CGSize blockSize = CGSizeMake(100, 30);
+
+	for (int i = 0; i < numberOfBlocks; i++) {
+
+
+		block = [[BlockView alloc] initWithFrame:CGRectMake(
+															// if it's not the first element, add 1 point of space between elements
+															(i == 0) ? 0 : (i * blockSize.width) + 5,
+															20,
+															blockSize.width,
+															blockSize.height)
+										   color: [self randomColor]];
+
+		[self.view addSubview:block];
+		[collisionBehavior addItem:block];
+
+	}
+}
+
+- (void)removeBlockFromSuperview:(BlockView *)block
+{
+	[block removeFromSuperview];
+}
+
+- (UIColor *)randomColor
+{
+	float red = (float) rand() / RAND_MAX;
+	float green = (float) rand() / RAND_MAX;
+	float blue = (float) rand() / RAND_MAX;
+	return [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
+}
 
 @end
