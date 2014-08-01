@@ -35,6 +35,7 @@
                         <gestureRecognizers/>
                     </view>
                     <connections>
+                        <outlet property="ballView" destination="PI6-gl-CvA" id="nEL-4W-a98"/>
                         <outlet property="paddleView" destination="QjN-hD-P7N" id="1hk-gY-r36"/>
                     </connections>
                 </viewController>

@@ -8,10 +8,13 @@
 
 #import "ViewController.h"
 #import "PaddleView.h"
+#import "BallView.h"
 
 @interface ViewController ()
 
 @property (weak, nonatomic) IBOutlet PaddleView *paddleView;
+@property (weak, nonatomic) IBOutlet BallView *ballView;
+
 
 @end
 
@@ -27,7 +30,7 @@
 - (IBAction)dragPaddle:(UIPanGestureRecognizer *)panGestureRecognizer
 {
 	CGPoint point = [panGestureRecognizer translationInView:self.view];
-	
+
 	self.paddleView.center = CGPointMake(point.x, self.paddleView.center.y);
 }
 
