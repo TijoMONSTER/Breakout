@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PaddleViewDelegate
+
+- (void)updatedLocationForPaddle;
+
+@end
+
 @interface PaddleView : UIView
+
+@property id<PaddleViewDelegate> delegate;
+
+- (void)updatePaddleLocation;
 
 @end

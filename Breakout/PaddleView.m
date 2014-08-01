@@ -10,6 +10,9 @@
 
 @implementation PaddleView
 
-
+- (void)updatePaddleLocation
+{
+	[self.delegate updatedLocationForPaddle];
+}
 
 @end
