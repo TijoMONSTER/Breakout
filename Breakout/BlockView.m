@@ -9,6 +9,13 @@
 #import "BlockView.h"
 #import "RandomColorGenerator.h"
 
+@interface BlockView ()
+
+@property int numberOfHits;
+@property UILabel *hitCountLabel;
+
+@end
+
 @implementation BlockView
 
 - (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color
@@ -21,7 +28,38 @@
 	self.dynamicBehavior.elasticity = 1.0;
 	self.dynamicBehavior.density = 1000;
 
+	self.numberOfHits = (arc4random() % 5) + 1;
+
+	NSLog(@"numHits %d", self.numberOfHits);
+
+	self.hitCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+	self.hitCountLabel.textAlignment = NSTextAlignmentCenter;
+	[self updateHitCountLabelText];
+	[self addSubview:self.hitCountLabel];
+
+
 	return self;
+}
+
+- (void)hit
+{
+	[UIView animateWithDuration:0.3 animations:^{
+		self.backgroundColor = [RandomColorGenerator randomColor];
+	}];
+
+	self.numberOfHits --;
+	[self updateHitCountLabelText];
+}
+
+- (BOOL)canGetHit
+{
+	// if there are hits left, return YES
+	return (self.numberOfHits > 0);
+}
+
+- (void)updateHitCountLabelText
+{
+	self.hitCountLabel.text = [NSString stringWithFormat:@"%d", self.numberOfHits];
 }
 
 - (void)animateDestruction

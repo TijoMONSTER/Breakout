@@ -73,16 +73,11 @@
 
 	// if a block was hit
 	if (block != nil) {
+		[block hit];
 
-		[block animateDestruction];
-
-		if ([self shouldStartAgain]) {
-			NSLog(@"Should start again");
-			[self resetBallPositionAndUpdateDynamicAnimator];
-			[dynamicAnimator removeAllBehaviors];
-
-			[self addBlocks];
-			[self setTimer];
+		// no more hits, remove it
+		if (![block canGetHit]) {
+			[block animateDestruction];
 		}
 	}
 }
@@ -102,6 +97,15 @@
 -(void)destructionAnimationCompletedWithBlockView:(id)block
 {
 	[self removeBlock:block];
+
+	if ([self shouldStartAgain]) {
+		NSLog(@"Should start again");
+		[self resetBallPositionAndUpdateDynamicAnimator];
+		[dynamicAnimator removeAllBehaviors];
+
+		[self addBlocks];
+		[self setTimer];
+	}
 }
 
 #pragma mark Helper methods
@@ -184,7 +188,11 @@
 
 - (void)setTimer
 {
-	[NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:3.0
+									 target:self
+								   selector:@selector(onTimer:)
+								   userInfo:nil
+									repeats:NO];
 }
 
 - (void)onTimer:(NSTimer *)timer

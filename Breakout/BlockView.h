@@ -14,13 +14,14 @@
 
 @end
 
-
 @interface BlockView : UIView
 
 @property UIDynamicItemBehavior *dynamicBehavior;
 @property id<BlockViewDelegate> delegate;
 
 - (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color;
+- (void)hit;
+- (BOOL)canGetHit;
 
 - (void)animateDestruction;
 
