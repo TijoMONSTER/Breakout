@@ -22,6 +22,7 @@
 		2C9ECE44198AEB1F003DE994 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C9ECE42198AEB1F003DE994 /* InfoPlist.strings */; };
 		2C9ECE46198AEB1F003DE994 /* BreakoutTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9ECE45198AEB1F003DE994 /* BreakoutTests.m */; };
 		2C9ECE51198AEBC1003DE994 /* PaddleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9ECE50198AEBC1003DE994 /* PaddleView.m */; };
+		2C9ECE54198B323F003DE994 /* BallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9ECE53198B323F003DE994 /* BallView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		2C9ECE45198AEB1F003DE994 /* BreakoutTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BreakoutTests.m; sourceTree = "<group>"; };
 		2C9ECE4F198AEBC1003DE994 /* PaddleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaddleView.h; sourceTree = "<group>"; };
 		2C9ECE50198AEBC1003DE994 /* PaddleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaddleView.m; sourceTree = "<group>"; };
+		2C9ECE52198B323F003DE994 /* BallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallView.h; sourceTree = "<group>"; };
+		2C9ECE53198B323F003DE994 /* BallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,8 @@
 				2C9ECE2C198AEB1F003DE994 /* Main.storyboard */,
 				2C9ECE2F198AEB1F003DE994 /* ViewController.h */,
 				2C9ECE30198AEB1F003DE994 /* ViewController.m */,
+				2C9ECE52198B323F003DE994 /* BallView.h */,
+				2C9ECE53198B323F003DE994 /* BallView.m */,
 				2C9ECE4F198AEBC1003DE994 /* PaddleView.h */,
 				2C9ECE50198AEBC1003DE994 /* PaddleView.m */,
 				2C9ECE32198AEB1F003DE994 /* Images.xcassets */,
@@ -256,6 +261,7 @@
 			files = (
 				2C9ECE51198AEBC1003DE994 /* PaddleView.m in Sources */,
 				2C9ECE31198AEB1F003DE994 /* ViewController.m in Sources */,
+				2C9ECE54198B323F003DE994 /* BallView.m in Sources */,
 				2C9ECE2B198AEB1F003DE994 /* AppDelegate.m in Sources */,
 				2C9ECE27198AEB1F003DE994 /* main.m in Sources */,
 			);
