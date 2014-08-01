@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "PaddleView.h"
 #import "BallView.h"
+#import "BlockView.h"
 
 @interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate>
 {
@@ -21,6 +22,7 @@
 
 @property (weak, nonatomic) IBOutlet PaddleView *paddleView;
 @property (weak, nonatomic) IBOutlet BallView *ballView;
+@property (weak, nonatomic) IBOutlet BlockView *blockView;
 
 @end
 
@@ -40,7 +42,7 @@
 	pushBehavior.magnitude = 0.2;
 	[dynamicAnimator addBehavior:pushBehavior];
 
-	collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.paddleView, self.ballView]];
+	collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.paddleView, self.ballView, self.blockView]];
 	collisionBehavior.collisionMode = UICollisionBehaviorModeEverything;
 	collisionBehavior.collisionDelegate = self;
 	collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
@@ -78,7 +80,9 @@
 
 - (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item1 withItem:(id<UIDynamicItem>)item2 atPoint:(CGPoint)p
 {
-	NSLog(@"Collision with item");
+	if ([item1 isEqual:self.blockView] || [item2 isEqual:self.blockView]) {
+		[self.blockView removeFromSuperview];
+	}
 }
 
 #pragma mark IBActions
