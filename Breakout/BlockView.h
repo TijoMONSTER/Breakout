@@ -10,6 +10,8 @@
 
 @interface BlockView : UIView
 
+@property UIDynamicItemBehavior *dynamicBehavior;
+
 - (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color;
 
 @end

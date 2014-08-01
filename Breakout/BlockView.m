@@ -14,6 +14,11 @@
 {
 	self = [super initWithFrame:frame];
 	self.backgroundColor = color;
+
+	self.dynamicBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self]];
+	self.dynamicBehavior.allowsRotation = NO;
+	self.dynamicBehavior.density = 1000;
+
 	return self;
 }
 @end
