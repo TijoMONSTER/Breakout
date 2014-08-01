@@ -21,8 +21,5 @@
 
 - (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color;
 - (void)hit;
-- (BOOL)canGetHit;
-
-- (void)animateDestruction;
 
 @end

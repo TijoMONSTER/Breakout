@@ -47,14 +47,8 @@
 		self.backgroundColor = [RandomColorGenerator randomColor];
 	}];
 
-	self.numberOfHits --;
-	[self updateHitCountLabelText];
-}
-
-- (BOOL)canGetHit
-{
-	// if there are hits left, return YES
-	return (self.numberOfHits > 0);
+	// hits > 0: update label, else: destroy!
+	(-- self.numberOfHits > 0) ? [self updateHitCountLabelText] : [self animateDestruction];
 }
 
 - (void)updateHitCountLabelText
@@ -64,6 +58,8 @@
 
 - (void)animateDestruction
 {
+	[self.hitCountLabel removeFromSuperview];
+
 	[UIView animateWithDuration:0.05
 					 animations:^{
 						 // make it bigger and change color

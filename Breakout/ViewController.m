@@ -74,11 +74,6 @@
 	// if a block was hit
 	if (block != nil) {
 		[block hit];
-
-		// no more hits, remove it
-		if (![block canGetHit]) {
-			[block animateDestruction];
-		}
 	}
 }
 
@@ -119,7 +114,7 @@
 	for (int i = 0; i < numberOfBlocksToAdd; i++) {
 		block = [[BlockView alloc] initWithFrame:CGRectMake(
 															// if it's not the first element, add 1 point of space between elements
-															(i == 0) ? 0 : (i * blockSize.width) + 5,
+															(i == 0) ? 0 : (i * blockSize.width) + (i + 1),
 															20,
 															blockSize.width,
 															blockSize.height)
