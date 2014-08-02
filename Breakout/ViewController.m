@@ -138,7 +138,7 @@
 	pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.ballView]
 													mode:UIPushBehaviorModeInstantaneous];
 
-	pushBehavior.pushDirection = CGVectorMake(0.5, 1.0);
+	pushBehavior.pushDirection = CGVectorMake((arc4random() % 2) == 0 ? - 0.5 : 0.5, 1.0);
 	pushBehavior.active = YES;
 	pushBehavior.magnitude = 0.02;
 	[dynamicAnimator addBehavior:pushBehavior];
