@@ -28,7 +28,7 @@
 	self.dynamicBehavior.elasticity = 1.0;
 	self.dynamicBehavior.density = 1000;
 
-	self.numberOfHits = (arc4random() % 5) + 1;
+	self.numberOfHits = (arc4random() % 3) + 1;
 
 	NSLog(@"numHits %d", self.numberOfHits);
 
@@ -36,7 +36,7 @@
 	self.hitCountLabel.textAlignment = NSTextAlignmentCenter;
 	[self updateHitCountLabelText];
 	[self addSubview:self.hitCountLabel];
-
+	self.hitCountLabel.font = [UIFont systemFontOfSize:self.frame.size.height - 1];
 
 	return self;
 }

@@ -108,22 +108,36 @@
 {
 	BlockView *block;
 
-	int numberOfBlocksToAdd = 3;
-	CGSize blockSize = CGSizeMake(100, 30);
+	int topPadding = 90;
+	int sidePadding = 17;
 
-	for (int i = 0; i < numberOfBlocksToAdd; i++) {
-		block = [[BlockView alloc] initWithFrame:CGRectMake(
-															// if it's not the first element, add 1 point of space between elements
-															(i == 0) ? 0 : (i * blockSize.width) + (i + 1),
-															20,
-															blockSize.width,
-															blockSize.height)
-										   color: [RandomColorGenerator randomColor]];
+	CGPoint initialPoint = CGPointMake(sidePadding, topPadding);
 
-		[self.view addSubview:block];
-		[self.blocks addObject:block];
-		block.delegate = self;
+	// substract padding on each side
+	float screenWidth = self.view.frame.size.width - (sidePadding * 2);
+
+	int numberOfBlocksPerLine = 7;
+	int numberOfLines = 10;
+
+	// blocks have 1 point space between each other
+	CGSize blockSize = CGSizeMake(((screenWidth - (numberOfBlocksPerLine + 1)) / numberOfBlocksPerLine), 10);
+
+
+	for (int line = 0; line < numberOfLines; line++) {
+		for (int i = 0; i < numberOfBlocksPerLine; i++) {
+
+			block = [[BlockView alloc] initWithFrame:CGRectMake(initialPoint.x + ((blockSize.width + 1) * i),
+																initialPoint.y + ((blockSize.height + 1) * line),
+																blockSize.width,
+																blockSize.height)
+											   color:[RandomColorGenerator randomColor]];
+
+					[self.view addSubview:block];
+					[self.blocks addObject:block];
+					block.delegate = self;
+		}
 	}
+
 }
 
 - (BOOL)shouldStartAgain
