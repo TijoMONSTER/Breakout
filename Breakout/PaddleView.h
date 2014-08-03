@@ -10,7 +10,7 @@
 
 @protocol PaddleViewDelegate
 
-- (void)updatedLocationForPaddle;
+- (void)didUpdateLocationForPaddle:(id)paddleView;
 
 @end
 
@@ -18,6 +18,6 @@
 
 @property id<PaddleViewDelegate> delegate;
 
-- (void)updatePaddleLocation;
+- (void)updatePaddleCenterWithPoint:(CGPoint)point;
 
 @end

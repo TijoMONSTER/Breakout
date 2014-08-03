@@ -18,37 +18,40 @@
 
 @implementation BlockView
 
-- (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color
+- (instancetype)initWithFrame:(CGRect)frame
 {
 	self = [super initWithFrame:frame];
-	self.backgroundColor = color;
 
 	self.dynamicBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self]];
-	self.dynamicBehavior.allowsRotation = YES;
+	self.dynamicBehavior.allowsRotation = NO;
 	self.dynamicBehavior.elasticity = 1.0;
 	self.dynamicBehavior.density = 1000;
 
-	self.numberOfHits = (arc4random() % 5) + 1;
-
-	NSLog(@"numHits %d", self.numberOfHits);
+	// random block type from 1 to 4
+	self.numberOfHits = (arc4random() % 4) + 1;
+	self.backgroundColor = [self colorForNumberOfHits:self.numberOfHits];
 
 	self.hitCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 	self.hitCountLabel.textAlignment = NSTextAlignmentCenter;
 	[self updateHitCountLabelText];
+	self.hitCountLabel.font = [UIFont systemFontOfSize:self.frame.size.height - 1];
 	[self addSubview:self.hitCountLabel];
-
 
 	return self;
 }
 
 - (void)hit
 {
-	[UIView animateWithDuration:0.3 animations:^{
-		self.backgroundColor = [RandomColorGenerator randomColor];
-	}];
-
 	// hits > 0: update label, else: destroy!
-	(-- self.numberOfHits > 0) ? [self updateHitCountLabelText] : [self animateDestruction];
+	if (-- self.numberOfHits > 0) {
+		[UIView animateWithDuration:0.3 animations:^{
+			self.backgroundColor = [self colorForNumberOfHits:self.numberOfHits];
+		}];
+		[self updateHitCountLabelText];
+	}
+	else {
+		[self animateDestruction];
+	}
 }
 
 - (void)updateHitCountLabelText
@@ -84,4 +87,27 @@
 										  }];
 					 }];
 }
+
+- (UIColor *)colorForNumberOfHits:(int)hits
+{
+	UIColor *color;
+	switch (hits) {
+		default:
+		case 1:
+			color = [UIColor colorWithRed:169/255.0 green:112/255.0 blue:226/255.0 alpha:1.0];
+			break;
+		case 2:
+			color = [UIColor colorWithRed:120/255.0 green:241/255.0 blue:240/255.0 alpha:1.0];
+			break;
+		case 3:
+			color = [UIColor colorWithRed:235/255.0 green:116/255.0 blue:235/255.0 alpha:1.0];
+			break;
+		case 4:
+			color = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:121/255.0 alpha:1.0];
+			break;
+	}
+
+	return color;
+}
+
 @end

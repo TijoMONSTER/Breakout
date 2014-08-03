@@ -44,9 +44,9 @@
 
 #pragma mark PaddleViewDelegate
 
-- (void)updatedLocationForPaddle
+- (void)didUpdateLocationForPaddle:(id)paddleView
 {
-	[dynamicAnimator updateItemUsingCurrentState:self.paddleView];
+	[dynamicAnimator updateItemUsingCurrentState:paddleView];
 }
 
 #pragma mark UICollisionBehaviorDelegate
@@ -81,10 +81,8 @@
 
 - (IBAction)dragPaddle:(UIPanGestureRecognizer *)panGestureRecognizer
 {
-	self.paddleView.center = CGPointMake([panGestureRecognizer locationInView:self.view].x,
-										 self.paddleView.center.y);
-
-	[self.paddleView updatePaddleLocation];
+	[self.paddleView updatePaddleCenterWithPoint: CGPointMake([panGestureRecognizer locationInView:self.view].x,
+															  self.paddleView.center.y)];
 }
 
 #pragma mark BlockViewDelegate
@@ -106,24 +104,33 @@
 #pragma mark Helper methods
 - (void)addBlocks
 {
-	BlockView *block;
+	int topPadding = 90;
+	int sidePadding = 12;
 
-	int numberOfBlocksToAdd = 3;
-	CGSize blockSize = CGSizeMake(100, 30);
+	CGPoint initialPoint = CGPointMake(sidePadding, topPadding);
 
-	for (int i = 0; i < numberOfBlocksToAdd; i++) {
-		block = [[BlockView alloc] initWithFrame:CGRectMake(
-															// if it's not the first element, add 1 point of space between elements
-															(i == 0) ? 0 : (i * blockSize.width) + (i + 1),
-															20,
-															blockSize.width,
-															blockSize.height)
-										   color: [RandomColorGenerator randomColor]];
+	// substract padding on each side
+	float screenWidth = self.view.frame.size.width - (sidePadding * 2);
 
-		[self.view addSubview:block];
-		[self.blocks addObject:block];
-		block.delegate = self;
+	int numberOfBlocksPerLine = 7;
+	int numberOfLines = 10;
+
+	// blocks have 1 point space between each other
+	CGSize blockSize = CGSizeMake(((screenWidth - (numberOfBlocksPerLine + 1)) / numberOfBlocksPerLine), 10);
+
+	for (int line = 0; line < numberOfLines; line++) {
+		for (int i = 0; i < numberOfBlocksPerLine; i++) {
+
+			BlockView *block = [[BlockView alloc] initWithFrame:CGRectMake(initialPoint.x + ((blockSize.width + 1) * i),
+																		   initialPoint.y + ((blockSize.height + 1) * line),
+																		   blockSize.width,
+																		   blockSize.height)];
+			[self.view addSubview:block];
+			[self.blocks addObject:block];
+			block.delegate = self;
+		}
 	}
+
 }
 
 - (BOOL)shouldStartAgain
@@ -138,7 +145,7 @@
 	pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.ballView]
 													mode:UIPushBehaviorModeInstantaneous];
 
-	pushBehavior.pushDirection = CGVectorMake(0.5, 1.0);
+	pushBehavior.pushDirection = CGVectorMake((arc4random() % 2) == 0 ? - 0.5 : 0.5, 1.0);
 	pushBehavior.active = YES;
 	pushBehavior.magnitude = 0.02;
 	[dynamicAnimator addBehavior:pushBehavior];
