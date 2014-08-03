@@ -13,9 +13,38 @@
 - (instancetype)initWithName:(NSString *)name
 {
 	self = [super init];
+
 	self.name = name;
-	self.score = 0;
+	[self resetValues];
+
 	return self;
+}
+
+- (void)didLoseTurn
+{
+	if (--self.turnsLeft <= 0) {
+		[self.delegate didLoseAllTurns:self];
+	}
+}
+
+- (NSString *)compareScoreWithPlayer:(Player *)player
+{
+	NSString *result;
+
+	if (self.score > player.score) {
+		result = @"win";
+	} else if (player.score > self.score) {
+		result = @"lose";
+	} else {
+		result = @"Draw";
+	}
+	return result;
+}
+
+- (void)resetValues
+{
+	self.score = 0;
+	self.turnsLeft = 3;
 }
 
 @end

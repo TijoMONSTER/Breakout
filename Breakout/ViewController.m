@@ -13,7 +13,7 @@
 #import "RandomColorGenerator.h"
 #import "Player.h"
 
-@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate, BlockViewDelegate, UIAlertViewDelegate, BallViewDelegate>
+@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate, BlockViewDelegate, UIAlertViewDelegate, BallViewDelegate, PlayerDelegate>
 {
 	UIDynamicAnimator *dynamicAnimator;
 	UIPushBehavior *pushBehavior;
@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet PaddleView *paddleView;
 @property (weak, nonatomic) IBOutlet BallView *ballView;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UILabel *turnsLabel;
 
 @property NSMutableArray *blocks;
 
@@ -44,14 +45,15 @@
 	self.ballView.delegate = self;
 
 	Player *player1 = [[Player alloc] initWithName:@"Player 1"];
+	player1.delegate = self;
 	Player *player2 = [[Player alloc] initWithName:@"Player 2"];
-
+	player2.delegate = self;
+	
 	self.players = @[player1, player2];
 	self.currentPlayer = player1;
 
-	[self updateScoreLabelText];
+	[self updateScoreAndTurnsLabels];
 	[self resetBallPositionAndUpdateDynamicAnimator];
-
 	[self addBlocksAndSetTimer];
 }
 
@@ -68,11 +70,9 @@
 {
 	if ([(NSString *)identifier isEqualToString: @"lowerBoundary"]) {
 		[self.ballView didFallOffTheLowerBoundary];
-
 		[self removeAllBlocks];
 		[self resetBallPositionAndRemoveBehaviors];
-		[self setNextPlayer];
-		[self addBlocksAndSetTimer];
+		[self.currentPlayer didLoseTurn];
 	}
 }
 
@@ -95,20 +95,12 @@
 	}
 }
 
-#pragma mark IBActions
-
-- (IBAction)dragPaddle:(UIPanGestureRecognizer *)panGestureRecognizer
-{
-	[self.paddleView updatePaddleCenterWithPoint: CGPointMake([panGestureRecognizer locationInView:self.view].x,
-															  self.paddleView.center.y)];
-}
-
 #pragma mark BlockViewDelegate
 
 - (void)scoreForHit:(int)score
 {
 	self.currentPlayer.score += score;
-	[self updateScoreLabelText];
+	[self updateScoreAndTurnsLabels];
 }
 
 -(void)destructionAnimationCompletedWithBlockView:(id)block
@@ -140,7 +132,7 @@
 		self.currentPlayer.score = 0;
 	}
 
-	[self updateScoreLabelText];
+	[self updateScoreAndTurnsLabels];
 }
 
 #pragma mark UIAlertViewDelegate
@@ -149,10 +141,71 @@
 {
 	// reset player scores
 	for (Player *player in self.players) {
-		player.score = 0;
+		[player resetValues];
+	}
+
+	// set first player as current
+	if ([self.currentPlayer isEqual:[self.players lastObject]]) {
+		[self setNextPlayer];
 	}
 
 	[self addBlocksAndSetTimer];
+}
+
+#pragma mark PlayerDelegate
+
+- (void)didLoseAllTurns:(id)player
+{
+	Player *lastPlayerInArray = (Player *)[self.players lastObject];
+
+	// if the current player was the last player in the array
+	if ([lastPlayerInArray isEqual:player]) {
+		// stop everything
+		[self resetBallPositionAndRemoveBehaviors];
+
+		Player *firstPlayerInArray = (Player *)[self.players firstObject];
+		NSString *scoreComparingResult = [firstPlayerInArray compareScoreWithPlayer:lastPlayerInArray];
+		NSString *alertMessage;
+
+		if ([scoreComparingResult isEqualToString:@"win"]) {
+			// first player wins
+			alertMessage = [NSString stringWithFormat:@"Final score: %d - %d \nThe winner is: %@\n Want to try again?",
+							firstPlayerInArray.score,
+							lastPlayerInArray.score,
+							firstPlayerInArray.name];
+		} else if ([scoreComparingResult isEqualToString:@"lose"]) {
+			// second player wins
+			alertMessage = [NSString stringWithFormat:@"Final score: %d - %d \nThe winner is: %@\n Want to try again?",
+							firstPlayerInArray.score,
+							lastPlayerInArray.score,
+							lastPlayerInArray.name];
+		} else {
+			// draw
+			alertMessage = [NSString stringWithFormat:@"Final score: %d - %d \nIt was a draw!\n Want to try again?",
+							firstPlayerInArray.score,
+							lastPlayerInArray.score];
+		}
+
+		UIAlertView *alertView = [[UIAlertView alloc] init];
+		alertView.delegate = self;
+		alertView.title = @"No more turns left!";
+		alertView.message = alertMessage;
+		[alertView addButtonWithTitle:@"OK"];
+		[alertView show];
+	}
+	else {
+		// game not finished yet
+		[self setNextPlayer];
+		[self addBlocksAndSetTimer];
+	}
+}
+
+#pragma mark IBActions
+
+- (IBAction)dragPaddle:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+	[self.paddleView updatePaddleCenterWithPoint: CGPointMake([panGestureRecognizer locationInView:self.view].x,
+															  self.paddleView.center.y)];
 }
 
 #pragma mark Helper methods
@@ -165,14 +218,8 @@
 		[dynamicAnimator removeBehavior:block.dynamicBehavior];
 		[collisionBehavior removeItem:block];
 	}
-
+	
 	[self.blocks removeAllObjects];
-}
-
-- (void) resetBallPositionAndRemoveBehaviors
-{
-	[self resetBallPositionAndUpdateDynamicAnimator];
-	[dynamicAnimator removeAllBehaviors];
 }
 
 - (void)addBlocksAndSetTimer
@@ -261,6 +308,12 @@
 	}
 }
 
+- (void) resetBallPositionAndRemoveBehaviors
+{
+	[self resetBallPositionAndUpdateDynamicAnimator];
+	[dynamicAnimator removeAllBehaviors];
+}
+
 - (void)resetBallPositionAndUpdateDynamicAnimator
 {
 	self.ballView.center = self.view.center;
@@ -284,13 +337,15 @@
 	[self addBehaviors];
 }
 
+
+
 - (void)removeBlock:(BlockView *)block
 {
 	[self.blocks removeObject:block];
 	[dynamicAnimator removeBehavior:block.dynamicBehavior];
 	[collisionBehavior removeItem:block];
 	[block removeFromSuperview];
-
+	block.delegate = nil;
 }
 
 - (void)setNextPlayer
@@ -299,19 +354,18 @@
 
 	if (++currentPlayerIndex == [self.players count]) {
 		self.currentPlayer = [self.players objectAtIndex:0];
-		NSLog(@"Setting current player back to 0");
 	}
 	else {
 		self.currentPlayer = [self.players objectAtIndex:currentPlayerIndex];
-		NSLog(@"Setting current player %@", self.currentPlayer.name);
 	}
 
-	[self updateScoreLabelText];
+	[self updateScoreAndTurnsLabels];
 }
 
-- (void)updateScoreLabelText
+- (void)updateScoreAndTurnsLabels
 {
 	self.scoreLabel.text = [NSString stringWithFormat:@"%@ score: %d", self.currentPlayer.name, self.currentPlayer.score];
+	self.turnsLabel.text = [NSString stringWithFormat:@"%d", self.currentPlayer.turnsLeft];
 }
 
 @end
