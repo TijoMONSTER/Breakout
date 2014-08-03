@@ -19,7 +19,7 @@
 @property UIDynamicItemBehavior *dynamicBehavior;
 @property id<BlockViewDelegate> delegate;
 
-- (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color;
+- (instancetype)initWithFrame:(CGRect)frame;
 - (void)hit;
 
 @end

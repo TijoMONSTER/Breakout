@@ -109,7 +109,7 @@
 	BlockView *block;
 
 	int topPadding = 90;
-	int sidePadding = 17;
+	int sidePadding = 10;
 
 	CGPoint initialPoint = CGPointMake(sidePadding, topPadding);
 
@@ -122,15 +122,13 @@
 	// blocks have 1 point space between each other
 	CGSize blockSize = CGSizeMake(((screenWidth - (numberOfBlocksPerLine + 1)) / numberOfBlocksPerLine), 10);
 
-
 	for (int line = 0; line < numberOfLines; line++) {
 		for (int i = 0; i < numberOfBlocksPerLine; i++) {
 
 			block = [[BlockView alloc] initWithFrame:CGRectMake(initialPoint.x + ((blockSize.width + 1) * i),
 																initialPoint.y + ((blockSize.height + 1) * line),
 																blockSize.width,
-																blockSize.height)
-											   color:[RandomColorGenerator randomColor]];
+																blockSize.height)];
 
 					[self.view addSubview:block];
 					[self.blocks addObject:block];

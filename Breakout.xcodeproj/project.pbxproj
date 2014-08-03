@@ -64,10 +64,10 @@
 		2C9ECE53198B323F003DE994 /* BallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallView.m; sourceTree = "<group>"; };
 		2CA6C1D7198BE5E100F76163 /* BlockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockView.h; sourceTree = "<group>"; };
 		2CA6C1D8198BE5E100F76163 /* BlockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockView.m; sourceTree = "<group>"; };
-		2CA6C1DA198C344500F76163 /* RandomColorGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RandomColorGenerator.h; path = Breakout/RandomColorGenerator.h; sourceTree = "<group>"; };
-		2CA6C1DB198C344500F76163 /* RandomColorGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RandomColorGenerator.m; path = Breakout/RandomColorGenerator.m; sourceTree = "<group>"; };
-		2CA6C1DD198C5C7A00F76163 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Breakout/Player.h; sourceTree = "<group>"; };
-		2CA6C1DE198C5C7A00F76163 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Player.m; path = Breakout/Player.m; sourceTree = "<group>"; };
+		2CA6C1DA198C344500F76163 /* RandomColorGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomColorGenerator.h; sourceTree = "<group>"; };
+		2CA6C1DB198C344500F76163 /* RandomColorGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomColorGenerator.m; sourceTree = "<group>"; };
+		2CA6C1DD198C5C7A00F76163 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		2CA6C1DE198C5C7A00F76163 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,10 +97,6 @@
 		2C9ECE0E198AEB1F003DE994 = {
 			isa = PBXGroup;
 			children = (
-				2CA6C1DD198C5C7A00F76163 /* Player.h */,
-				2CA6C1DE198C5C7A00F76163 /* Player.m */,
-				2CA6C1DA198C344500F76163 /* RandomColorGenerator.h */,
-				2CA6C1DB198C344500F76163 /* RandomColorGenerator.m */,
 				2C9ECE20198AEB1F003DE994 /* Breakout */,
 				2C9ECE3F198AEB1F003DE994 /* BreakoutTests */,
 				2C9ECE19198AEB1F003DE994 /* Frameworks */,
@@ -131,6 +127,10 @@
 		2C9ECE20198AEB1F003DE994 /* Breakout */ = {
 			isa = PBXGroup;
 			children = (
+				2CA6C1DD198C5C7A00F76163 /* Player.h */,
+				2CA6C1DE198C5C7A00F76163 /* Player.m */,
+				2CA6C1DA198C344500F76163 /* RandomColorGenerator.h */,
+				2CA6C1DB198C344500F76163 /* RandomColorGenerator.m */,
 				2C9ECE29198AEB1F003DE994 /* AppDelegate.h */,
 				2C9ECE2A198AEB1F003DE994 /* AppDelegate.m */,
 				2C9ECE2C198AEB1F003DE994 /* Main.storyboard */,
