@@ -106,10 +106,8 @@
 #pragma mark Helper methods
 - (void)addBlocks
 {
-	BlockView *block;
-
 	int topPadding = 90;
-	int sidePadding = 10;
+	int sidePadding = 12;
 
 	CGPoint initialPoint = CGPointMake(sidePadding, topPadding);
 
@@ -125,14 +123,13 @@
 	for (int line = 0; line < numberOfLines; line++) {
 		for (int i = 0; i < numberOfBlocksPerLine; i++) {
 
-			block = [[BlockView alloc] initWithFrame:CGRectMake(initialPoint.x + ((blockSize.width + 1) * i),
-																initialPoint.y + ((blockSize.height + 1) * line),
-																blockSize.width,
-																blockSize.height)];
-
-					[self.view addSubview:block];
-					[self.blocks addObject:block];
-					block.delegate = self;
+			BlockView *block = [[BlockView alloc] initWithFrame:CGRectMake(initialPoint.x + ((blockSize.width + 1) * i),
+																		   initialPoint.y + ((blockSize.height + 1) * line),
+																		   blockSize.width,
+																		   blockSize.height)];
+			[self.view addSubview:block];
+			[self.blocks addObject:block];
+			block.delegate = self;
 		}
 	}
 
