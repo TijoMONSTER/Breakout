@@ -72,7 +72,7 @@
 		[self.ballView didFallOffTheLowerBoundary];
 		[self removeAllBlocks];
 		[self resetBallPositionAndRemoveBehaviors];
-		[self.currentPlayer didLoseTurn];
+		[self.currentPlayer loseTurn];
 	}
 }
 
@@ -153,6 +153,13 @@
 }
 
 #pragma mark PlayerDelegate
+
+- (void)didLoseTurn:(id)player
+{
+	// game not finished yet
+	[self setNextPlayer];
+	[self addBlocksAndSetTimer];
+}
 
 - (void)didLoseAllTurns:(id)player
 {
