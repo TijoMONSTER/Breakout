@@ -10,6 +10,7 @@
 
 @protocol PlayerDelegate
 
+- (void)didLoseTurn:(id)player;
 - (void)didLoseAllTurns:(id)player;
 
 @end
@@ -23,7 +24,7 @@
 
 - (instancetype)initWithName:(NSString *)name;
 
-- (void)didLoseTurn;
+- (void)loseTurn;
 - (void)resetValues;
 
 - (NSString *)compareScoreWithPlayer:(Player *)player;

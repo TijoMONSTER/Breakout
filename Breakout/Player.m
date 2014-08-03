@@ -20,11 +20,9 @@
 	return self;
 }
 
-- (void)didLoseTurn
+- (void)loseTurn
 {
-	if (--self.turnsLeft <= 0) {
-		[self.delegate didLoseAllTurns:self];
-	}
+	(-- self.turnsLeft > 0) ? [self.delegate didLoseTurn:self] : [self.delegate didLoseAllTurns:self];
 }
 
 - (NSString *)compareScoreWithPlayer:(Player *)player
