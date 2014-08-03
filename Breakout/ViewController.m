@@ -124,8 +124,8 @@
 	// substract padding on each side
 	float screenWidth = self.view.frame.size.width - (sidePadding * 2);
 
-	int numberOfBlocksPerLine = 1;
-	int numberOfLines = 1;
+	int numberOfBlocksPerLine = 7;
+	int numberOfLines = 10;
 
 	// blocks have 1 point space between each other
 	CGSize blockSize = CGSizeMake(((screenWidth - (numberOfBlocksPerLine + 1)) / numberOfBlocksPerLine), 10);
