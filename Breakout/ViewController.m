@@ -12,7 +12,7 @@
 #import "BlockView.h"
 #import "RandomColorGenerator.h"
 
-@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate, BlockViewDelegate>
+@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate, BlockViewDelegate, UIAlertViewDelegate>
 {
 	UIDynamicAnimator *dynamicAnimator;
 	UIPushBehavior *pushBehavior;
@@ -92,13 +92,25 @@
 	[self removeBlock:block];
 
 	if ([self shouldStartAgain]) {
-		NSLog(@"Should start again");
+
+		// stop everything
 		[self resetBallPositionAndUpdateDynamicAnimator];
 		[dynamicAnimator removeAllBehaviors];
 
-		[self addBlocks];
-		[self setTimer];
+		UIAlertView *alertView = [[UIAlertView alloc] init];
+		alertView.delegate = self;
+		alertView.title = @"Game Over";
+		alertView.message = @"Want to try again?";
+		[alertView addButtonWithTitle:@"OK"];
+		[alertView show];
 	}
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+	[self addBlocks];
+	[self setTimer];
 }
 
 #pragma mark Helper methods
@@ -112,8 +124,8 @@
 	// substract padding on each side
 	float screenWidth = self.view.frame.size.width - (sidePadding * 2);
 
-	int numberOfBlocksPerLine = 7;
-	int numberOfLines = 10;
+	int numberOfBlocksPerLine = 1;
+	int numberOfLines = 1;
 
 	// blocks have 1 point space between each other
 	CGSize blockSize = CGSizeMake(((screenWidth - (numberOfBlocksPerLine + 1)) / numberOfBlocksPerLine), 10);
