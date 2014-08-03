@@ -12,8 +12,9 @@
 #import "BlockView.h"
 #import "RandomColorGenerator.h"
 #import "Player.h"
+#import "VisualTimer.h"
 
-@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate, BlockViewDelegate, UIAlertViewDelegate, BallViewDelegate, PlayerDelegate>
+@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate, BlockViewDelegate, UIAlertViewDelegate, BallViewDelegate, PlayerDelegate, VisualTimerDelegate>
 {
 	UIDynamicAnimator *dynamicAnimator;
 	UIPushBehavior *pushBehavior;
@@ -200,6 +201,17 @@
 	}
 }
 
+#pragma mark VisualTimerDelegate
+
+- (void)didCompleteVisualTimer:(id)timer
+{
+	NSLog(@"did complete visual timer");
+	VisualTimer *visualTimer = (VisualTimer *)timer;
+	visualTimer.delegate = nil;
+	[visualTimer removeFromSuperview];
+	[self addBehaviors];
+}
+
 #pragma mark IBActions
 
 - (IBAction)dragPaddle:(UIPanGestureRecognizer *)panGestureRecognizer
@@ -225,7 +237,7 @@
 - (void)addBlocksAndSetTimer
 {
 	[self addBlocks];
-	[self setTimer];
+	[self setVisualTimer];
 }
 
 - (void)addBlocks
@@ -320,24 +332,13 @@
 	[dynamicAnimator updateItemUsingCurrentState:self.ballView];
 }
 
-- (void)setTimer
+- (void)setVisualTimer
 {
-	[NSTimer scheduledTimerWithTimeInterval:3.0
-									 target:self
-								   selector:@selector(onTimer:)
-								   userInfo:nil
-									repeats:NO];
+	NSLog(@"set visual timer");
+	VisualTimer *timer = [[VisualTimer alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) timeInSeconds:3.0];
+	timer.delegate = self;
+	[self.view addSubview:timer];
 }
-
-- (void)onTimer:(NSTimer *)timer
-{
-	[timer invalidate];
-	timer = nil;
-
-	[self addBehaviors];
-}
-
-
 
 - (void)removeBlock:(BlockView *)block
 {

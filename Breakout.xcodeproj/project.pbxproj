@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C356790198EE02100E60B9C /* VisualTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C35678F198EE02100E60B9C /* VisualTimer.m */; };
 		2C9ECE1B198AEB1F003DE994 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C9ECE1A198AEB1F003DE994 /* Foundation.framework */; };
 		2C9ECE1D198AEB1F003DE994 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C9ECE1C198AEB1F003DE994 /* CoreGraphics.framework */; };
 		2C9ECE1F198AEB1F003DE994 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C9ECE1E198AEB1F003DE994 /* UIKit.framework */; };
@@ -39,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C35678E198EE02100E60B9C /* VisualTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualTimer.h; sourceTree = "<group>"; };
+		2C35678F198EE02100E60B9C /* VisualTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualTimer.m; sourceTree = "<group>"; };
 		2C9ECE17198AEB1F003DE994 /* Breakout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Breakout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C9ECE1A198AEB1F003DE994 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2C9ECE1C198AEB1F003DE994 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -127,6 +130,8 @@
 		2C9ECE20198AEB1F003DE994 /* Breakout */ = {
 			isa = PBXGroup;
 			children = (
+				2C35678E198EE02100E60B9C /* VisualTimer.h */,
+				2C35678F198EE02100E60B9C /* VisualTimer.m */,
 				2CA6C1DD198C5C7A00F76163 /* Player.h */,
 				2CA6C1DE198C5C7A00F76163 /* Player.m */,
 				2CA6C1DA198C344500F76163 /* RandomColorGenerator.h */,
@@ -279,6 +284,7 @@
 				2CA6C1DC198C344500F76163 /* RandomColorGenerator.m in Sources */,
 				2C9ECE51198AEBC1003DE994 /* PaddleView.m in Sources */,
 				2C9ECE31198AEB1F003DE994 /* ViewController.m in Sources */,
+				2C356790198EE02100E60B9C /* VisualTimer.m in Sources */,
 				2C9ECE54198B323F003DE994 /* BallView.m in Sources */,
 				2C9ECE2B198AEB1F003DE994 /* AppDelegate.m in Sources */,
 				2C9ECE27198AEB1F003DE994 /* main.m in Sources */,
