@@ -10,9 +10,10 @@
 
 @implementation PaddleView
 
-- (void)updatePaddleLocation
+- (void)updatePaddleCenterWithPoint:(CGPoint)point
 {
-	[self.delegate updatedLocationForPaddle];
+	self.center = point;
+	[self.delegate didUpdateLocationForPaddle:self];
 }
 
 @end

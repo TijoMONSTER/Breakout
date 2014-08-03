@@ -44,9 +44,9 @@
 
 #pragma mark PaddleViewDelegate
 
-- (void)updatedLocationForPaddle
+- (void)didUpdateLocationForPaddle:(id)paddleView
 {
-	[dynamicAnimator updateItemUsingCurrentState:self.paddleView];
+	[dynamicAnimator updateItemUsingCurrentState:paddleView];
 }
 
 #pragma mark UICollisionBehaviorDelegate
@@ -81,10 +81,8 @@
 
 - (IBAction)dragPaddle:(UIPanGestureRecognizer *)panGestureRecognizer
 {
-	self.paddleView.center = CGPointMake([panGestureRecognizer locationInView:self.view].x,
-										 self.paddleView.center.y);
-
-	[self.paddleView updatePaddleLocation];
+	[self.paddleView updatePaddleCenterWithPoint: CGPointMake([panGestureRecognizer locationInView:self.view].x,
+															  self.paddleView.center.y)];
 }
 
 #pragma mark BlockViewDelegate
