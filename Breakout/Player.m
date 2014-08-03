@@ -10,9 +10,10 @@
 
 @implementation Player
 
-- (id)init
+- (instancetype)initWithName:(NSString *)name
 {
 	self = [super init];
+	self.name = name;
 	self.score = 0;
 	return self;
 }

@@ -10,7 +10,8 @@
 
 @protocol BlockViewDelegate
 
--(void)destructionAnimationCompletedWithBlockView:(id)block;
+- (void)scoreForHit:(int)score;
+- (void)destructionAnimationCompletedWithBlockView:(id)block;
 
 @end
 

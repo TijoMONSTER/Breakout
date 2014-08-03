@@ -10,6 +10,9 @@
 
 @interface Player : NSObject
 
+@property NSString *name;
 @property int score;
+
+- (instancetype)initWithName:(NSString *)name;
 
 @end

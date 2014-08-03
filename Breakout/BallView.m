@@ -10,4 +10,9 @@
 
 @implementation BallView
 
+- (void)didFallOffTheLowerBoundary
+{
+	[self.delegate scoreForFallenBall:40];
+}
+
 @end

@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BallViewDelegate
+
+- (void)scoreForFallenBall:(int)score;
+
+@end
+
 @interface BallView : UIView
+
+@property id<BallViewDelegate> delegate;
+
+- (void)didFallOffTheLowerBoundary;
 
 @end

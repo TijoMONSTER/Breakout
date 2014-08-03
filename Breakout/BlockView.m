@@ -11,7 +11,8 @@
 
 @interface BlockView ()
 
-@property int numberOfHits;
+@property int numberOfHitsLeft;
+@property int numberOfTimesHit;
 @property UILabel *hitCountLabel;
 
 @end
@@ -28,8 +29,10 @@
 	self.dynamicBehavior.density = 1000;
 
 	// random block type from 1 to 4
-	self.numberOfHits = (arc4random() % 4) + 1;
-	self.backgroundColor = [self colorForNumberOfHits:self.numberOfHits];
+	self.numberOfHitsLeft = (arc4random() % 4) + 1;
+	self.backgroundColor = [self colorForNumberOfHits];
+
+	self.numberOfTimesHit = 0;
 
 	self.hitCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 	self.hitCountLabel.textAlignment = NSTextAlignmentCenter;
@@ -42,10 +45,13 @@
 
 - (void)hit
 {
+	self.numberOfTimesHit ++;
+	[self.delegate scoreForHit:[self scoreForNumberOfTimesHit]];
+
 	// hits > 0: update label, else: destroy!
-	if (-- self.numberOfHits > 0) {
+	if (-- self.numberOfHitsLeft > 0) {
 		[UIView animateWithDuration:0.3 animations:^{
-			self.backgroundColor = [self colorForNumberOfHits:self.numberOfHits];
+			self.backgroundColor = [self colorForNumberOfHits];
 		}];
 		[self updateHitCountLabelText];
 	}
@@ -56,7 +62,7 @@
 
 - (void)updateHitCountLabelText
 {
-	self.hitCountLabel.text = [NSString stringWithFormat:@"%d", self.numberOfHits];
+	self.hitCountLabel.text = [NSString stringWithFormat:@"%d", self.numberOfHitsLeft];
 }
 
 - (void)animateDestruction
@@ -88,10 +94,10 @@
 					 }];
 }
 
-- (UIColor *)colorForNumberOfHits:(int)hits
+- (UIColor *)colorForNumberOfHits
 {
 	UIColor *color;
-	switch (hits) {
+	switch (self.numberOfHitsLeft) {
 		default:
 		case 1:
 			color = [UIColor colorWithRed:169/255.0 green:112/255.0 blue:226/255.0 alpha:1.0];
@@ -108,6 +114,11 @@
 	}
 
 	return color;
+}
+
+- (int)scoreForNumberOfTimesHit
+{
+	return (self.numberOfTimesHit * 10);
 }
 
 @end

@@ -11,8 +11,9 @@
 #import "BallView.h"
 #import "BlockView.h"
 #import "RandomColorGenerator.h"
+#import "Player.h"
 
-@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate, BlockViewDelegate, UIAlertViewDelegate>
+@interface ViewController () <PaddleViewDelegate, UICollisionBehaviorDelegate, BlockViewDelegate, UIAlertViewDelegate, BallViewDelegate>
 {
 	UIDynamicAnimator *dynamicAnimator;
 	UIPushBehavior *pushBehavior;
@@ -23,8 +24,11 @@
 
 @property (weak, nonatomic) IBOutlet PaddleView *paddleView;
 @property (weak, nonatomic) IBOutlet BallView *ballView;
+@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 
 @property NSMutableArray *blocks;
+
+@property Player *currentPlayer;
 
 @end
 
@@ -36,7 +40,11 @@
 
 	self.blocks = [NSMutableArray array];
 	self.paddleView.delegate = self;
+	self.ballView.delegate = self;
 
+	self.currentPlayer = [[Player alloc] initWithName:@"Player 1"];
+
+	[self setNextPlayer];
 	[self resetBallPositionAndUpdateDynamicAnimator];
 	[self addBlocks];
 	[self setTimer];
@@ -54,6 +62,7 @@
 - (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier atPoint:(CGPoint)p
 {
 	if ([(NSString *)identifier isEqualToString: @"lowerBoundary"]) {
+		[self.ballView didFallOffTheLowerBoundary];
 		[self resetBallPositionAndUpdateDynamicAnimator];
 	}
 }
@@ -87,6 +96,12 @@
 
 #pragma mark BlockViewDelegate
 
+- (void)scoreForHit:(int)score
+{
+	self.currentPlayer.score += score;
+	[self updateScoreLabelText];
+}
+
 -(void)destructionAnimationCompletedWithBlockView:(id)block
 {
 	[self removeBlock:block];
@@ -106,7 +121,22 @@
 	}
 }
 
+#pragma mark BallViewDelegate
+
+- (void)scoreForFallenBall:(int)score
+{
+	// don't show negative scores
+	if (self.currentPlayer.score >= score) {
+		self.currentPlayer.score -= score;
+	} else {
+		self.currentPlayer.score = 0;
+	}
+
+	[self updateScoreLabelText];
+}
+
 #pragma mark UIAlertViewDelegate
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
 	[self addBlocks];
@@ -114,6 +144,7 @@
 }
 
 #pragma mark Helper methods
+
 - (void)addBlocks
 {
 	int topPadding = 90;
@@ -224,6 +255,16 @@
 	[collisionBehavior removeItem:block];
 	[block removeFromSuperview];
 
+}
+
+- (void)setNextPlayer
+{
+	[self updateScoreLabelText];
+}
+
+- (void)updateScoreLabelText
+{
+	self.scoreLabel.text = [NSString stringWithFormat:@"%@ score: %d", self.currentPlayer.name, self.currentPlayer.score];
 }
 
 @end
