@@ -29,6 +29,7 @@
 @property NSMutableArray *blocks;
 
 @property Player *currentPlayer;
+@property NSArray *players;
 
 @end
 
@@ -42,12 +43,16 @@
 	self.paddleView.delegate = self;
 	self.ballView.delegate = self;
 
-	self.currentPlayer = [[Player alloc] initWithName:@"Player 1"];
+	Player *player1 = [[Player alloc] initWithName:@"Player 1"];
+	Player *player2 = [[Player alloc] initWithName:@"Player 2"];
 
-	[self setNextPlayer];
+	self.players = @[player1, player2];
+	self.currentPlayer = player1;
+
+	[self updateScoreLabelText];
 	[self resetBallPositionAndUpdateDynamicAnimator];
-	[self addBlocks];
-	[self setTimer];
+
+	[self addBlocksAndSetTimer];
 }
 
 #pragma mark PaddleViewDelegate
@@ -63,7 +68,11 @@
 {
 	if ([(NSString *)identifier isEqualToString: @"lowerBoundary"]) {
 		[self.ballView didFallOffTheLowerBoundary];
-		[self resetBallPositionAndUpdateDynamicAnimator];
+
+		[self removeAllBlocks];
+		[self resetBallPositionAndRemoveBehaviors];
+		[self setNextPlayer];
+		[self addBlocksAndSetTimer];
 	}
 }
 
@@ -109,8 +118,7 @@
 	if ([self shouldStartAgain]) {
 
 		// stop everything
-		[self resetBallPositionAndUpdateDynamicAnimator];
-		[dynamicAnimator removeAllBehaviors];
+		[self resetBallPositionAndRemoveBehaviors];
 
 		UIAlertView *alertView = [[UIAlertView alloc] init];
 		alertView.delegate = self;
@@ -139,11 +147,39 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	[self addBlocks];
-	[self setTimer];
+	// reset player scores
+	for (Player *player in self.players) {
+		player.score = 0;
+	}
+
+	[self addBlocksAndSetTimer];
 }
 
 #pragma mark Helper methods
+
+- (void)removeAllBlocks
+{
+	for (BlockView *block in self.blocks) {
+		[block removeFromSuperview];
+		block.delegate = nil;
+		[dynamicAnimator removeBehavior:block.dynamicBehavior];
+		[collisionBehavior removeItem:block];
+	}
+
+	[self.blocks removeAllObjects];
+}
+
+- (void) resetBallPositionAndRemoveBehaviors
+{
+	[self resetBallPositionAndUpdateDynamicAnimator];
+	[dynamicAnimator removeAllBehaviors];
+}
+
+- (void)addBlocksAndSetTimer
+{
+	[self addBlocks];
+	[self setTimer];
+}
 
 - (void)addBlocks
 {
@@ -259,6 +295,17 @@
 
 - (void)setNextPlayer
 {
+	int currentPlayerIndex = [self.players indexOfObject:self.currentPlayer];
+
+	if (++currentPlayerIndex == [self.players count]) {
+		self.currentPlayer = [self.players objectAtIndex:0];
+		NSLog(@"Setting current player back to 0");
+	}
+	else {
+		self.currentPlayer = [self.players objectAtIndex:currentPlayerIndex];
+		NSLog(@"Setting current player %@", self.currentPlayer.name);
+	}
+
 	[self updateScoreLabelText];
 }
 
