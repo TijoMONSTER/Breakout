@@ -212,11 +212,17 @@
 
 - (void)didCompleteVisualTimer:(id)timer
 {
-	NSLog(@"did complete visual timer");
-	VisualTimer *visualTimer = (VisualTimer *)timer;
-	visualTimer.delegate = nil;
-	[visualTimer removeFromSuperview];
-	[self addBehaviors];
+	[UIView animateWithDuration:1 animations:^{
+		self.ballView.alpha = 1.0;
+	} completion:^(BOOL finished) {
+		NSLog(@"did complete visual timer");
+		VisualTimer *visualTimer = (VisualTimer *)timer;
+		visualTimer.delegate = nil;
+		[visualTimer removeFromSuperview];
+
+		self.ballView.hidden = NO;
+		[self addBehaviors];
+	}];
 }
 
 #pragma mark IBActions
@@ -341,10 +347,14 @@
 
 - (void)setVisualTimer
 {
-	NSLog(@"set visual timer");
-	VisualTimer *timer = [[VisualTimer alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) timeInSeconds:3.0];
-	timer.delegate = self;
-	[self.view addSubview:timer];
+	[UIView animateWithDuration:1 animations:^{
+		self.ballView.alpha = 0.0;
+	} completion:^(BOOL finished) {
+		NSLog(@"set visual timer");
+		VisualTimer *timer = [[VisualTimer alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) timeInSeconds:3.0];
+		timer.delegate = self;
+		[self.view addSubview:timer];
+	}];
 }
 
 - (void)removeBlock:(BlockView *)block
